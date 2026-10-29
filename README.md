@@ -235,30 +235,6 @@ Run these commands directly in Neovim command-line mode (`:`):
 | `:PlayLayout [mode]` | Cycles layout or sets: `embedded`, `external`, or `classic` (e.g. `:PlayLayout embedded`) |
 
 *(Backward-compatible aliases `:Music`, `:MusicToggle`, `:MusicPause`, etc. are also available).*
-
----
-
-## ⌨️ Keybindings (Inside Player Window)
-
-When the player window is open (`:Play`), control everything with your keyboard:
-
-| Key | Action |
-|---|---|
-| `h` / `l` or `<Left>` / `<Right>` | Move horizontally across toolbar buttons (`Restart`, `Pause`, `Play`, `Vol +`, `Vol -`, `Help`) |
-| `j` / `k` or `<Down>` / `<Up>` | Move vertically between toolbar and playlist items |
-| `<Tab>` / `<S-Tab>` | Switch active focus between the toolbar and the track list |
-| `<CR>` / `<Enter>` | **Activate**: Triggers selected toolbar button, toggles folder, or plays track |
-| `<Space>` | Toggle Play / Pause |
-| `s` / `x` | Stop playback |
-| `r` | Restart the currently playing track from the beginning |
-| `+` / `=` | Increase volume by +5% |
-| `-` / `_` | Decrease volume by -5% |
-| `>` / `]` | Next track |
-| `<` / `[` | Previous track |
-| `?` | Toggle the in-app help modal |
-| `q` / `<Esc>` | Close player window (**audio continues playing in background**) |
-
----
  
 ## 📄 License
 
