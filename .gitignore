@@ -1,0 +1,15 @@
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Runtime data & SQLite caches
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs and secrets
+*.log
+cookies.txt
+*.cookie
