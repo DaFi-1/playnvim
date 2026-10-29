@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./logo_playnvim.jpeg" alt="playnvim logo" width="650" />
+</p>
+
 # 🎵 playnvim
 
 Um reprodutor de áudio e música minimalista e elegante para Neovim, com controle via **mpv IPC**, suporte a playlists do YouTube e arquivos locais, equalizador animado e miniaturas visuais.
@@ -32,15 +36,32 @@ Antes de usar o plugin, certifique-se de ter os seguintes programas instalados n
 
 ### Usando `lazy.nvim`
 
+#### Forma Simples:
+```lua
+{ "DaFi-1/playnvim" }
+```
+
+#### Forma Completa (Configurações Gerais):
 ```lua
 {
   "DaFi-1/playnvim",
   config = function()
     require("playnvim").setup({
-      volume = 30,           -- Volume inicial (0 a 100)
+      keymap = "<space>a",   -- Atalho global opcional para alternar o player (ou false)
+      volume = 30,           -- Volume inicial padrão (0 a 100)
+      layout = "embedded",   -- Layout: "embedded" (com capa embutida), "external" ou "classic"
+      width = 76,            -- Largura da janela flutuante
+      height = 18,           -- Altura da janela flutuante
+      border = "rounded",    -- Borda: "rounded", "single", "double" ou "solid"
       auto_next = true,      -- Tocar próxima faixa automaticamente
-      keymap = "<space>a",   -- Atalho global opcional para alternar o player
-      playlist = {
+      thumbnail = true,      -- Exibir capas/thumbnails (requer suporte a Kitty Graphics)
+      thumb_width = 30,      -- Largura da coluna da miniatura
+      cookies = "auto",      -- "auto" (detecta Brave/Chrome/Firefox), caminho do arquivo, ou false
+      mpv_args = {           -- Argumentos adicionais repassados ao mpv
+        "--no-video",
+        "--ytdl-format=bestaudio/best",
+      },
+      playlist = {           -- Sua playlist inicial (YouTube ou arquivos locais)
         {
           playlist = "LOFI",
           title = "Lofi Hip Hop - Beats to Relax",
@@ -50,6 +71,11 @@ Antes de usar o plugin, certifique-se de ter os seguintes programas instalados n
           playlist = "LOFI",
           title = "Final Fantasy VII LoFi Mix",
           url = "https://www.youtube.com/watch?v=_PEQhKUDRNU",
+        },
+        {
+          playlist = "SYNTHWAVE",
+          title = "Synthwave Radio - Chill Synth",
+          url = "https://www.youtube.com/watch?v=4xDzrJKXOOY",
         },
         {
           playlist = "LOCAL",
@@ -62,16 +88,26 @@ Antes de usar o plugin, certifique-se de ter os seguintes programas instalados n
 }
 ```
 
+---
+
 ### Usando `packer.nvim`
 
+#### Forma Simples:
+```lua
+use({ "DaFi-1/playnvim" })
+```
+
+#### Forma Completa:
 ```lua
 use({
   "DaFi-1/playnvim",
   config = function()
     require("playnvim").setup({
-      volume = 30,
-      auto_next = true,
       keymap = "<space>a",
+      volume = 30,
+      layout = "embedded",
+      auto_next = true,
+      -- consulte as opções completas acima
     })
   end,
 })
