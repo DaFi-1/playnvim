@@ -12,6 +12,33 @@ A sleek, lightweight, and modern floating music and audio player for Neovim, pow
 
 ---
 
+## 🎨 Layout Modes
+
+**playnvim** offers three layout options tailored to your preference and terminal capabilities. Set your default layout in `setup({ layout = "embedded" })` or toggle between them anytime with `:PlayLayout`:
+
+### 1. `embedded` Layout *(Default)*
+> Renders the album / video thumbnail directly inside the upper section of the player window.
+
+<p align="center">
+  <img src="./screenshot_2026-10-29_16-11-21.png" alt="Embedded Layout Preview" width="560" />
+</p>
+
+### 2. `external` Layout
+> Displays a dedicated floating preview window positioned on the left side of the main player.
+
+<p align="center">
+  <img src="./screenshot_2026-10-29_16-10-44.png" alt="External Layout Preview" width="680" />
+</p>
+
+### 3. `classic` Layout
+> A clean, text-only minimal interface featuring the live equalizer and vertical volume bar. Ideal for any standard terminal emulator.
+
+<p align="center">
+  <img src="./screenshot_2026-10-29_16-10-22.png" alt="Classic Layout Preview" width="560" />
+</p>
+
+---
+
 ## 💡 How It Works
 
 **playnvim** spawns a decoupled `mpv` background daemon communicating through a local UNIX IPC socket:
