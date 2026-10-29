@@ -4,64 +4,68 @@
 
 # 🎵 playnvim
 
-Um reprodutor de áudio e música minimalista e elegante para Neovim, com controle via **mpv IPC**, suporte a playlists do YouTube e arquivos locais, equalizador animado e miniaturas visuais.
+A sleek, lightweight, and modern floating music and audio player for Neovim, powered by **mpv** via IPC. Stream YouTube tracks or play local audio files with an animated equalizer, interactive directory-tree playlists, volume control, and Kitty graphics cover art thumbnails.
+
+[![Neovim](https://img.shields.io/badge/Neovim-0.9+-green.svg?style=flat-square&logo=neovim)](https://neovim.io)
+[![mpv](https://img.shields.io/badge/mpv-IPC-orange.svg?style=flat-square)](https://mpv.io)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 
 ---
 
-## 💡 Como Funciona
+## 💡 How It Works
 
-O **playnvim** inicia uma instância do `mpv` em segundo plano desacoplada do Neovim, comunicando-se por meio de um socket IPC.
-* Não trava nem congela a interface do Neovim enquanto toca ou carrega músicas.
-* Permite fechar a janela do player a qualquer momento (`q` ou `<Esc>`) enquanto o áudio continua tocando normalmente em segundo plano.
-* Exibe equalizador gráfico dinâmico, barra de volume vertical e suporte a miniaturas/capas usando o protocolo gráfico Kitty.
+**playnvim** spawns a decoupled `mpv` background daemon communicating through a local UNIX IPC socket:
+* **Non-blocking**: Neovim never freezes or lags while buffering or fetching YouTube streams.
+* **Background Playback**: Close the player window at any time (`q` or `<Esc>`); playback continues uninterrupted in the background.
+* **Visual Polish**: Includes real-time progress tracking, an animated two-tier braille/bar equalizer, a dedicated vertical volume fader, and dynamic video cover thumbnails rendered directly inside your terminal using the Kitty Graphics Protocol.
 
 ---
 
-## 📦 Dependências
+## 📦 Requirements & Dependencies
 
-Antes de usar o plugin, certifique-se de ter os seguintes programas instalados no sistema:
+Ensure the following tools are installed on your system:
 
-| Dependência | Descrição | Como Instalar (Linux / Mac) |
+| Dependency | Purpose | Installation (Linux / macOS) |
 |---|---|---|
-| **Neovim** (>= 0.9.0) | Editor de texto | `sudo apt install neovim` / `brew install neovim` |
-| **mpv** | Motor de reprodução de áudio | `sudo apt install mpv` / `sudo pacman -S mpv` / `brew install mpv` |
-| **yt-dlp** | Suporte a streaming de links do YouTube | `sudo apt install yt-dlp` ou `pip install yt-dlp` |
-| **sqlite3** *(opcional)* | Cache local de capas/thumbnails | `sudo apt install sqlite3` (já nativo na maioria das distribuições) |
+| **Neovim** (>= 0.9.0) | Text editor | `sudo apt install neovim` / `brew install neovim` |
+| **mpv** | Audio backend engine | `sudo apt install mpv` / `sudo pacman -S mpv` / `brew install mpv` |
+| **yt-dlp** | YouTube streaming & metadata extraction | `sudo apt install yt-dlp` / `pip install yt-dlp` / `brew install yt-dlp` |
+| **sqlite3** *(optional)* | Local caching for cover art thumbnails | `sudo apt install sqlite3` (built-in on most Linux distros and macOS) |
 
-> **Nota para miniaturas visuais**: Para ver as capas dos vídeos/músicas, use um emulador de terminal compatível com o Kitty Graphics Protocol (ex: Kitty, Ghostty, WezTerm). Em outros terminais o player funciona normalmente no modo de layout clássico.
+> **Note on Thumbnail Previews**: Cover art rendering uses the Kitty Graphics Protocol. To view album/video thumbnails, use a compatible terminal emulator (such as **Kitty**, **Ghostty**, or **WezTerm**). In other terminals, the player works seamlessly using the classic or external layout mode without images.
 
 ---
 
-## 🚀 Instalação
+## 🚀 Installation
 
-### Usando `lazy.nvim`
+### Using `lazy.nvim`
 
-#### Forma Simples:
+#### Quick Setup:
 ```lua
 { "DaFi-1/playnvim" }
 ```
 
-#### Forma Completa (Configurações Gerais):
+#### Full Setup with General Configuration:
 ```lua
 {
   "DaFi-1/playnvim",
   config = function()
     require("playnvim").setup({
-      keymap = "<space>a",   -- Atalho global opcional para alternar o player (ou false)
-      volume = 30,           -- Volume inicial padrão (0 a 100)
-      layout = "embedded",   -- Layout: "embedded" (com capa embutida), "external" ou "classic"
-      width = 76,            -- Largura da janela flutuante
-      height = 18,           -- Altura da janela flutuante
-      border = "rounded",    -- Borda: "rounded", "single", "double" ou "solid"
-      auto_next = true,      -- Tocar próxima faixa automaticamente
-      thumbnail = true,      -- Exibir capas/thumbnails (requer suporte a Kitty Graphics)
-      thumb_width = 30,      -- Largura da coluna da miniatura
-      cookies = "auto",      -- "auto" (detecta Brave/Chrome/Firefox), caminho do arquivo, ou false
-      mpv_args = {           -- Argumentos adicionais repassados ao mpv
+      keymap = "<space>a",   -- Global shortcut to toggle the player window (or false to disable)
+      volume = 30,           -- Default initial volume (0 to 100)
+      layout = "embedded",   -- Layout style: "embedded" (with cover), "external", or "classic"
+      width = 76,            -- Floating window width
+      height = 18,           -- Floating window height
+      border = "rounded",    -- Border style: "rounded", "single", "double", or "solid"
+      auto_next = true,      -- Automatically play the next track when current one finishes
+      thumbnail = true,      -- Enable cover art thumbnail preview (Kitty graphics protocol)
+      thumb_width = 30,      -- Column width reserved for cover thumbnail
+      cookies = "auto",      -- Auto-detect browser cookies (Brave/Chrome/Firefox) for YouTube, or path, or false
+      mpv_args = {           -- Additional flags forwarded to the mpv backend
         "--no-video",
         "--ytdl-format=bestaudio/best",
       },
-      playlist = {           -- Sua playlist inicial (YouTube ou arquivos locais)
+      playlist = {           -- Initial default playlist
         {
           playlist = "LOFI",
           title = "Lofi Hip Hop - Beats to Relax",
@@ -79,8 +83,8 @@ Antes de usar o plugin, certifique-se de ter os seguintes programas instalados n
         },
         {
           playlist = "LOCAL",
-          title = "Minha Música Local",
-          url = "/caminho/para/musica.mp3",
+          title = "Local Favorite Track",
+          url = vim.fn.expand("~/Music/song.mp3"),
         },
       },
     })
@@ -90,14 +94,14 @@ Antes de usar o plugin, certifique-se de ter os seguintes programas instalados n
 
 ---
 
-### Usando `packer.nvim`
+### Using `packer.nvim`
 
-#### Forma Simples:
+#### Quick Setup:
 ```lua
 use({ "DaFi-1/playnvim" })
 ```
 
-#### Forma Completa:
+#### Full Setup:
 ```lua
 use({
   "DaFi-1/playnvim",
@@ -107,7 +111,7 @@ use({
       volume = 30,
       layout = "embedded",
       auto_next = true,
-      -- consulte as opções completas acima
+      -- See full options above
     })
   end,
 })
@@ -115,44 +119,141 @@ use({
 
 ---
 
-## 🎮 Comandos do Plugin
+## 🎶 Adding Songs & Playlists
 
-Todos os comandos podem ser executados no modo de comando do Neovim (`:`):
+You can organize and customize your music library directly in the `playlist` option of `setup()`.
 
-| Comando | Descrição e Exemplo de Uso |
+### Track Structure
+
+Each track is represented by a Lua table:
+
+```lua
+{
+  playlist = "CATEGORY_OR_FOLDER_NAME", -- Optional: groups tracks in a collapsible folder
+  title = "Display Name of the Track", -- Name shown in the player list
+  url = "https://... or /path/to/file",  -- YouTube URL or local file path
+}
+```
+
+### 1. Adding YouTube Streams & Playlists
+
+Simply provide the full YouTube video URL:
+
+```lua
+playlist = {
+  {
+    playlist = "LOFI & CHILL",
+    title = "Lofi Girl - Beats to Relax/Study to",
+    url = "https://www.youtube.com/watch?v=jfKfPfyJRdk",
+  },
+  {
+    playlist = "LOFI & CHILL",
+    title = "Chrono Trigger OST Mix",
+    url = "https://www.youtube.com/watch?v=QKrG7nw5cak",
+  },
+}
+```
+
+### 2. Adding Local Audio Files
+
+Local paths can point to any audio format supported by `mpv` (`.mp3`, `.flac`, `.m4a`, `.ogg`, `.wav`, etc.). You can use absolute paths or `vim.fn.expand`:
+
+```lua
+playlist = {
+  {
+    playlist = "MY MUSIC",
+    title = "Stairway to Heaven - Led Zeppelin",
+    url = "/home/user/Music/stairway_to_heaven.flac",
+  },
+  {
+    playlist = "MY MUSIC",
+    title = "Chill Lofi Beat",
+    url = vim.fn.expand("~/Music/Beats/track01.mp3"),
+  },
+}
+```
+
+### 3. Folder-Based Organization (Tree View)
+
+When you assign the same `playlist` attribute to multiple tracks, **playnvim** automatically groups them into interactive folders in the UI:
+
+```text
+▾ LOFI & CHILL (2)
+  󰐊 Lofi Girl - Beats to Relax/Study to
+    Chrono Trigger OST Mix
+▸ SYNTHWAVE (4)
+▸ MY MUSIC (2)
+```
+
+* Navigate with `j` / `k` over any folder header.
+* Press `<Enter>` on a folder header to **expand** (`▾`) or **collapse** (`▸`) that category.
+* Press `<Enter>` on any track to start playing it immediately.
+
+---
+
+## 🎮 Plugin Commands
+
+Run these commands directly in Neovim command-line mode (`:`):
+
+| Command | Description & Usage |
 |---|---|
-| `:Play` ou `:PlayNvim` | Abre a janela centralizada do reprodutor musical |
-| `:PlayToggle` | Abre o player se estiver fechado, ou fecha se estiver aberto |
-| `:PlayPause` | Alterna entre Pausar e Continuar a reprodução |
-| `:PlayResume` | Retoma a reprodução da música atual |
-| `:PlayStop` | Para a reprodução de áudio |
-| `:PlayNext` | Pula para a próxima música da playlist |
-| `:PlayPrev` | Volta para a música anterior da playlist |
-| `:PlayVolume <0-100>` | Define o volume desejado diretamente (ex: `:PlayVolume 50`) |
-| `:PlayLayout [modo]` | Alterna ou escolhe o layout: `embedded`, `external` ou `classic` (ex: `:PlayLayout embedded`) |
+| `:Play` or `:PlayNvim` | Opens the centered player interface |
+| `:PlayToggle` | Toggles the player window open or closed |
+| `:PlayPause` | Toggles playback between Pause and Resume |
+| `:PlayResume` | Resumes playback of the current track |
+| `:PlayStop` | Stops playback and resets the engine |
+| `:PlayNext` | Skips to the next track in the playlist |
+| `:PlayPrev` | Returns to the previous track in the playlist |
+| `:PlayVolume <0-100>` | Sets volume directly (e.g. `:PlayVolume 45`) |
+| `:PlayLayout [mode]` | Cycles layout or sets: `embedded`, `external`, or `classic` (e.g. `:PlayLayout embedded`) |
+
+*(Backward-compatible aliases `:Music`, `:MusicToggle`, `:MusicPause`, etc. are also available).*
 
 ---
 
-## ⌨️ Teclas de Atalho (Dentro do Player)
+## ⌨️ Keybindings (Inside Player Window)
 
-Ao abrir a interface do player (`:Play`), você pode controlar tudo pelo teclado:
+When the player window is open (`:Play`), control everything with your keyboard:
 
-* `h` / `l` ou `←` / `→`: Navega horizontalmente entre os botões de ação do topo.
-* `j` / `k` ou `↓` / `↑`: Desce ou sobe entre a barra de botões e as músicas da playlist.
-* `<Enter>`: Executa a ação do botão selecionado ou toca a música escolhida.
-* `<Space>`: Pausa ou despausa a música atual.
-* `s`: Para a reprodução (Stop).
-* `r`: Reinicia a música atual do início.
-* `+` / `-`: Aumenta ou diminui o volume em passos de 5%.
-* `>` / `<`: Próxima ou faixa anterior.
-* `q` ou `<Esc>`: Fecha a janela do player (o som continuará tocando em segundo plano).
-* `?`: Abre a ajuda rápida com a lista de atalhos.
+| Key | Action |
+|---|---|
+| `h` / `l` or `<Left>` / `<Right>` | Move horizontally across toolbar buttons (`Restart`, `Pause`, `Play`, `Vol +`, `Vol -`, `Help`) |
+| `j` / `k` or `<Down>` / `<Up>` | Move vertically between toolbar and playlist items |
+| `<Tab>` / `<S-Tab>` | Switch active focus between the toolbar and the track list |
+| `<CR>` / `<Enter>` | **Activate**: Triggers selected toolbar button, toggles folder, or plays track |
+| `<Space>` | Toggle Play / Pause |
+| `s` / `x` | Stop playback |
+| `r` | Restart the currently playing track from the beginning |
+| `+` / `=` | Increase volume by +5% |
+| `-` / `_` | Decrease volume by -5% |
+| `>` / `]` | Next track |
+| `<` / `[` | Previous track |
+| `?` | Toggle the in-app help modal |
+| `q` / `<Esc>` | Close player window (**audio continues playing in background**) |
 
 ---
 
-## 📄 Licença
+## 📊 Statusline / Lualine Integration
 
-Este projeto está licenciado sob os termos da **MIT License**. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Display the currently playing song in your statusline:
+
+```lua
+-- Example with lualine.nvim:
+{
+  function()
+    return require("playnvim").status()
+  end,
+  cond = function()
+    return require("playnvim").status() ~= ""
+  end,
+}
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for complete details.
 
 ```text
 MIT License
