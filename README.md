@@ -2,9 +2,7 @@
   <img src="./logo_playnvim.jpeg" alt="playnvim logo" width="650" />
 </p>
  
-minha motivacao para fazer esse plugins, foi por odiar o algoritmo do youtube ao abrir o youtube e acaaabar me pegando em videos de recomendadcao, mas eu so queria uma musica para ouvir ou
-estudar e a merda do algoritmo acaba me pegando, esse plugin foi feito para resovler essa minha indiferenca com o youtube, adicione seus links de musica,audiolivro,lofi,palestras, em forma de
-link, podtende tambeem organizar em playlist, e numca mais precisar abrir o youtube para fazer isso apenas manter os links salvos na sua configuracao do nvim
+My motivation for creating this plugin came from hating the YouTube algorithm. Whenever I opened YouTube just wanting some music to listen to or study with, the damn algorithm would trap me in endless recommended videos. This plugin was built to solve that frustration once and for all: add your links for music, audiobooks, lofi, lectures, and talks, organize them into playlists, and never open YouTube again for this—just keep all your favorite links saved directly in your Neovim configuration.
 
 [![Neovim](https://img.shields.io/badge/Neovim-0.9+-green.svg?style=flat-square&logo=neovim)](https://neovim.io)
 [![mpv](https://img.shields.io/badge/mpv-IPC-orange.svg?style=flat-square)](https://mpv.io)
