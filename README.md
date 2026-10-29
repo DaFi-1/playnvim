@@ -1,10 +1,10 @@
 <p align="center">
   <img src="./logo_playnvim.jpeg" alt="playnvim logo" width="650" />
 </p>
-
-# 🎵 playnvim
-
-A sleek, lightweight, and modern floating music and audio player for Neovim, powered by **mpv** via IPC. Stream YouTube tracks or play local audio files with an animated equalizer, interactive directory-tree playlists, volume control, and Kitty graphics cover art thumbnails.
+ 
+minha motivacao para fazer esse plugins, foi por odiar o algoritmo do youtube ao abrir o youtube e acaaabar me pegando em videos de recomendadcao, mas eu so queria uma musica para ouvir ou
+estudar e a merda do algoritmo acaba me pegando, esse plugin foi feito para resovler essa minha indiferenca com o youtube, adicione seus links de musica,audiolivro,lofi,palestras, em forma de
+link, podtende tambeem organizar em playlist, e numca mais precisar abrir o youtube para fazer isso apenas manter os links salvos na sua configuracao do nvim
 
 [![Neovim](https://img.shields.io/badge/Neovim-0.9+-green.svg?style=flat-square&logo=neovim)](https://neovim.io)
 [![mpv](https://img.shields.io/badge/mpv-IPC-orange.svg?style=flat-square)](https://mpv.io)
@@ -259,25 +259,7 @@ When the player window is open (`:Play`), control everything with your keyboard:
 | `q` / `<Esc>` | Close player window (**audio continues playing in background**) |
 
 ---
-
-## 📊 Statusline / Lualine Integration
-
-Display the currently playing song in your statusline:
-
-```lua
--- Example with lualine.nvim:
-{
-  function()
-    return require("playnvim").status()
-  end,
-  cond = function()
-    return require("playnvim").status() ~= ""
-  end,
-}
-```
-
----
-
+ 
 ## 📄 License
 
 This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for complete details.
